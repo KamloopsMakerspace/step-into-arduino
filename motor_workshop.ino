@@ -1,5 +1,7 @@
 #include <Stepper.h>
 
+#define BUTTON_PIN 4
+
 // THIS IS STEPS PER REVOLUTION BEFORE GEARS
 #define STEPS_PER_REVOLUTION_INTERNAL 32
 
@@ -13,14 +15,17 @@ Stepper motor(STEPS_PER_REVOLUTION_INTERNAL, 8, 10, 9, 11);
 /* IT IS A GOOD PRACTICE TO DECLARE ESSENTIAL VARIABLES AS GLOBALS 
    FOR ARDUINO, THIS HELPS TO AVOID OUT OF MEMORY CONDITIONS */
 int steps;
+int buttonState = 0;
 
 void setup() { // WILL RUN ONCE
+  pinMode(BUTTON_PIN, INPUT);
   motor.setSpeed(900);
 }
 
 void loop() { // WILL RUN OVER AND OVER AND OVER
-  motor.step(STEPS_PER_REVOLUTION / 2);
-  delay(1000);
-  motor.step(-STEPS_PER_REVOLUTION / 2);
-  delay(1000);
+  buttonState = digitalRead(BUTTON_PIN);
+
+  if (buttonState == LOW) {
+    motor.step(10);
+  }
 }
